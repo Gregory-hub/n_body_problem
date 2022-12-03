@@ -68,8 +68,8 @@ Neptune = AstronomicalObject(
 )
 
 system = AstronomicalSystem("Solar System", vector([Sun, Mercury, Venus, Earth, Mars, Jupiter, Saturn, UrAnus, Neptune]))
-print(system.objects)
+print(system.get_center_of_mass())
 for i in range(10000):
-    system.update(1 / 24)   # 1 hour
+    system.update(h=1 / 24)   # 1 hour
 
-print(system.objects)
+print(system.get_center_of_mass())

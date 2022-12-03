@@ -34,3 +34,12 @@ class AstronomicalSystem:
                 obj.v = obj.v + h * obj.a(self.objects)
             for obj in self.objects:
                 obj.pos = obj.pos + h * obj.v
+
+    def get_center_of_mass(self):
+        system_mass = 0
+        center_of_mass = vector([0, 0, 0])
+        for obj in self.objects:
+            center_of_mass = center_of_mass + obj.mass * obj.pos
+            system_mass += obj.mass
+
+        return center_of_mass / system_mass
