@@ -19,6 +19,16 @@ class VAO:
             program=self.program.programs['shadow_map'],
             vbo=self.vbo.vbos['cube'])
 
+        # line vbo
+        self.vaos['line'] = self.get_vao(
+            program=self.program.programs['default'],
+            vbo=self.vbo.vbos['line'])
+
+        # shadow cube vao
+        self.vaos['shadow_line'] = self.get_vao(
+            program=self.program.programs['shadow_map'],
+            vbo=self.vbo.vbos['line'])
+
     def get_vao(self, program, vbo):
         vao = self.ctx.vertex_array(program, [(vbo.vbo, vbo.format, *vbo.attribs)], skip_errors=True)
         return vao

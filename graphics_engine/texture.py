@@ -8,6 +8,7 @@ class Texture:
         self.app = app
         self.ctx = app.ctx
         self.textures = {}
+        self.textures['default'] = self.get_texture(path='graphics_engine/textures/default.png')
         self.textures[0] = self.get_texture(path='graphics_engine/textures/img.png')
         self.textures[1] = self.get_texture(path='graphics_engine/textures/img_1.png')
         self.textures[2] = self.get_texture(path='graphics_engine/textures/img_2.png')

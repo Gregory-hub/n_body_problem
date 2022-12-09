@@ -7,6 +7,7 @@ class VBO:
     def __init__(self, ctx):
         self.vbos = {}
         self.vbos['cube'] = CubeVBO(ctx)
+        self.vbos['line'] = LineVBO(ctx)
 
     def destroy(self):
         [vbo.destroy() for vbo in self.vbos.values()]
@@ -72,3 +73,14 @@ class CubeVBO(BaseVBO):
 
         vertex_data = np.hstack([tex_coord_data, normals, vertex_data])
         return vertex_data
+
+
+class LineVBO(BaseVBO):
+    def __init__(self, ctx):
+        super().__init__(ctx)
+        self.format = '3f'
+        self.attribs = ['in_position']
+    
+    def get_vertex_data(self):
+        vertices = np.array([(0, 0, 0), (1, 0, 0)], dtype='f4')
+        return vertices
