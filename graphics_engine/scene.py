@@ -1,6 +1,6 @@
 import glm
 
-from graphics_engine.model import Cube, MovingCube, Cat, Line
+from graphics_engine.model import Cube, MovingCube, Cat
 
 
 class Scene:
@@ -23,14 +23,16 @@ class SystemSimulationScene(Scene):
 
     def load(self):
         # axes
-        self.add_object(Line(self.app, scale=(100, 100, 100)))
+        self.add_object(Cube(self.app, 'cube', pos=(0, 0, 0), scale=(100, 0.05, 0.05), shade=False))
 
-        # cube floor
-        for y in range(-30, 30):
-            for x in range(-30, 30):
-                self.add_object(Cube(self.app, 'cube', pos=(x * 2, -3, y * 2)))
+        self.add_object(Cube(self.app, 'cube', pos=(0, 0, 0), scale=(0.05, 100, 0.05), shade=False))
+
+        self.add_object(Cube(self.app, 'cube', pos=(0, 0, 0), scale=(0.05, 0.05, 100), shade=False))
+
+        self.add_object(Cube(self.app, 'cube', pos=(0, -3, 0), scale=(50, 1, 50), shade=False))
+
         # moving cube
-        self.moving_cube = MovingCube(self.app, pos=(20, 10, 30), scale=(2, 2, 2), tex_id=2)
+        self.moving_cube = MovingCube(self.app, pos=(10, 10, 20), scale=(2, 2, 2), tex_id=2)
         self.add_object(self.moving_cube)
 
         self.add_object(Cube(self.app, 'cube', pos=(20, 3, 20)))

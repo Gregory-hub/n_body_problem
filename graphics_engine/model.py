@@ -4,7 +4,7 @@ import glm
 
 
 class BaseModel:
-    def __init__(self, app, vao_name, tex_id='default', pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1)):
+    def __init__(self, app, vao_name, tex_id='default', pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1), shade=True):
         self.app = app
         self.pos = pos
         self.vao_name = vao_name
@@ -15,6 +15,7 @@ class BaseModel:
         self.vao = app.mesh.vao.vaos[vao_name]
         self.program = self.vao.program
         self.camera = self.app.camera
+        self.shade = shade
 
         self.program['m_view_light'].write(self.app.light.m_view_light)
         # resolution
@@ -68,21 +69,18 @@ class BaseModel:
         self.program['m_model'].write(self.m_model)
 
     def update_shadow(self):
-        self.shadow_program['m_model'].write(self.m_model)
+        if self.shade:
+            self.shadow_program['m_model'].write(self.m_model)
 
     def render_shadow(self):
-        self.update_shadow()
-        self.shadow_vao.render()
-
-
-class Line(BaseModel):
-    def __init__(self, app, vao_name='line', tex_id='default', pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1)):
-        super().__init__(app, vao_name, tex_id, pos, rot, scale)
+        if self.shade:
+            self.update_shadow()
+            self.shadow_vao.render()
 
 
 class Cube(BaseModel):
-    def __init__(self, app, vao_name='cube', tex_id='default', pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1)):
-        super().__init__(app, vao_name, tex_id, pos, rot, scale)
+    def __init__(self, app, vao_name='cube', tex_id='default', pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1), shade=True):
+        super().__init__(app, vao_name, tex_id, pos, rot, scale, shade)
 
 
 class MovingCube(Cube):
