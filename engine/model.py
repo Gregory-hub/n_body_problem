@@ -3,14 +3,14 @@ from math import sqrt, pi
 import numpy as np
 import glm
 
-from vbo import VBO
-from shader_program import ShaderProgram
-from vao import VAO
+from engine.vbo import VBO
+from engine.shader_program import ShaderProgram
+from engine.vao import VAO
 
 
 class BaseModel:
     def __init__(self, engine, shader_name: str = 'default', pos: tuple = (0, 0, 0), scale: tuple = (1, 1, 1)):
-        self.pos = pos
+        self.pos = glm.vec3(pos)
         self.model_matrix = glm.translate(glm.mat4(), self.pos)
         self.scale = scale
         self.model_matrix = glm.scale(self.model_matrix, self.scale)
@@ -40,6 +40,17 @@ class BaseModel:
     def update(self):
         self.shader_program.update_input_variable('view_matrix', self.engine.camera.view_matrix)
         self.shader_program.update_input_variable('camPos', self.engine.camera.pos)
+    
+    def transform(self, pos: tuple = None, scale: tuple = None):
+        if pos is not None:
+            self.pos = pos
+        if scale is not None:
+            self.scale = scale
+
+        self.model_matrix = glm.translate(glm.mat4(), self.pos)
+        self.model_matrix = glm.scale(self.model_matrix, self.scale)
+
+        self.shader_program.update_input_variable('model_matrix', self.model_matrix)
     
     def destroy(self):
         self.shader_program.destroy()
@@ -102,6 +113,9 @@ class Sphere(BaseModel):
         super().__init__(engine, shader_name, pos, scale=(scale, scale, scale))
         self.color = glm.vec3(color)
         self.shader_program.update_input_variable('color', self.color)
+
+    def __repr__(self):
+        return f"<Sphere(pos={self.pos}, color={self.color}, scale={self.scale}, quality={self.quality})>"
 
     def get_vbo_data(self):
         # vbo_format = '3f'
@@ -172,6 +186,20 @@ class Sphere(BaseModel):
         vertex_data = np.hstack([vertex_data, normals])
         vertex_data = np.array(vertex_data, dtype='f4')
         return vertex_data, vbo_format, vbo_attrs
+
+    def transform(self, pos: tuple = None, scale: tuple = None, color: tuple = None):
+        if pos is not None:
+            self.pos = pos
+        if scale is not None:
+            self.scale = scale
+        if color is not None:
+            self.color = glm.vec3(color)
+
+        self.model_matrix = glm.translate(glm.mat4(), self.pos)
+        self.model_matrix = glm.scale(self.model_matrix, self.scale)
+
+        self.shader_program.update_input_variable('model_matrix', self.model_matrix)
+        self.shader_program.update_input_variable('color', self.color)
 
     def _get_normal(self, point_1: np.array, point_2: np.array):
         normal = np.array([point_1[0] + point_2[0], point_1[1] + point_2[1], point_1[2] + point_2[2]]) / 2

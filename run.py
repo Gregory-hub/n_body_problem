@@ -1,6 +1,8 @@
-from engine import GraphicsEngine
+from engine import engine
+from scene import NBodySystemScene
 
 
 if __name__ == "__main__":
-    engine = GraphicsEngine()
+    scene = NBodySystemScene(engine)
+    engine.set_scene(scene)
     engine.run()

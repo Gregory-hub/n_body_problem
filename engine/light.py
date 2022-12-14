@@ -1,6 +1,6 @@
 import glm
 
-from model import Sphere
+from engine.model import Sphere
 
 
 class Light:
