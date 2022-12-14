@@ -5,7 +5,6 @@ import moderngl as mgl
 
 from scene import Scene
 from camera import Camera
-from light import Light
 
 class GraphicsEngine:
     def __init__(self, win_size: tuple = (1600, 900)):
@@ -25,7 +24,6 @@ class GraphicsEngine:
         self.ctx.enable(flags=mgl.DEPTH_TEST)
 
         self.camera = Camera(self)
-        self.light = Light()
         self.clock = pg.time.Clock()
         self.time = 0
         self.delta_time = 0
@@ -40,7 +38,7 @@ class GraphicsEngine:
                 sys.exit()
 
     def render(self):
-        self.ctx.clear(color=(0, 0, 0.05))
+        self.ctx.clear(color=(0, 0, 0))
         self.scene.render()
         pg.display.flip()
 

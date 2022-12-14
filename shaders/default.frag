@@ -15,6 +15,7 @@ struct Light {
 };
 
 uniform Light light;
+uniform bool ignore_light = false;
 
 vec3 getLight(vec3 color) {
     // ambient light
@@ -30,5 +31,9 @@ vec3 getLight(vec3 color) {
 }
 
 void main() {
-    fragColor = vec4(getLight(color), 1.0);
+    if (ignore_light) {
+        fragColor = vec4(color, 1.0);
+    } else {
+        fragColor = vec4(getLight(color), 1.0);
+    }
 }
