@@ -10,7 +10,7 @@ class Light:
 
         self.ambient_intensity = 0.1 * self.color
         self.diffuse_intensity = 0.8 * self.color
-        self.specular_intensity = 1 * self.color
+        self.specular_intensity = 0.5 * self.color
 
 
 class LightSource(Light):

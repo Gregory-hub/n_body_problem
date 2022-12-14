@@ -26,6 +26,7 @@ class BaseModel:
         self.shader_program.update_input_variable('light.pos', self.engine.light.pos)
         self.shader_program.update_input_variable('light.ambient_intensity', self.engine.light.ambient_intensity)
         self.shader_program.update_input_variable('light.diffuse_intensity', self.engine.light.diffuse_intensity)
+        self.shader_program.update_input_variable('light.specular_intensity', self.engine.light.specular_intensity)
         self.shader_program.update_input_variable('proj_matrix', self.engine.camera.proj_matrix)
         self.shader_program.update_input_variable('view_matrix', self.engine.camera.view_matrix)
         self.shader_program.update_input_variable('model_matrix', self.model_matrix)
@@ -37,8 +38,8 @@ class BaseModel:
         self.vao.render()
 
     def update(self):
-        pass
         self.shader_program.update_input_variable('view_matrix', self.engine.camera.view_matrix)
+        self.shader_program.update_input_variable('camPos', self.engine.camera.pos)
     
     def destroy(self):
         self.shader_program.destroy()
