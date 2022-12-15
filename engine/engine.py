@@ -25,7 +25,7 @@ class GraphicsEngine:
         self.ctx = mgl.create_context()
         self.ctx.enable(flags=mgl.DEPTH_TEST)
 
-        self.camera = Camera(self)
+        self.camera = Camera(self, pos=(0, 0, -40))
         self.clock = pg.time.Clock()
         self.time = 0
         self.delta_time = 0
