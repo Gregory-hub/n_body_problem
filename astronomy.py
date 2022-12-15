@@ -15,14 +15,17 @@ class AstronomicalObject:
             raise ValueError(f"dimensions number is 3 (pos len is {len(pos)}, velocity is {len(velocity)}")
         self.name = name
         self.mass = mass
-        self.pos = pos
-        self.v = velocity
+        self.pos = np.array(pos)
+        self.v = np.array(velocity)
 
     def __repr__(self):
         return f'<AstronomicalObject("{self.name}", position={self.pos}, v={self.v})>'
 
     def a(self, objects: np.array) -> np.array:
-        a = sum([(G * obj.mass * (obj.pos - self.pos) / abs((obj.pos - self.pos)**3)) for obj in objects if obj is not self])
+        a = np.array([0, 0, 0], dtype='f8')
+        for obj in objects:
+            if obj is not self:
+                a += G * obj.mass * (obj.pos - self.pos) / abs((obj.pos - self.pos)**3)
         return a
 
 
@@ -59,10 +62,17 @@ class AstronomicalSystem:
             if not isinstance(planet, Planet):
                 raise ValueError("Invalid planet type: planets must be of type Planet")
 
-        self.stars = stars
-        self.planets = planets
+        self.stars = {}
+        for star in stars:
+            self.stars[star.name] = star
+        self.planets = {}
+        for planet in planets:
+            self.planets[planet.name] = planet
+
         self.objects = np.hstack([stars, planets])
         self.simulation_time = 0
+
+        self.file = open('simulation.txt', 'w');
 
     def update(self, step: float):
         if RUNGE_KUTTA:
@@ -72,14 +82,15 @@ class AstronomicalSystem:
                 obj.v = obj.v + step * obj.a(self.objects)
             for obj in self.objects:
                 obj.pos = obj.pos + step * obj.v
-        
+
         self.simulation_time += step
+        self.record(step)
 
-    # def get_center_of_mass(self):
-    #     system_mass = 0
-    #     center_of_mass = np.array([0, 0, 0])
-    #     for obj in self.objects:
-    #         center_of_mass = center_of_mass + obj.mass * obj.pos
-    #         system_mass += obj.mass
+    def record(self, step):
+        self.file.write(f'SIMULATION TIME = {str(self.simulation_time)}, step size = {step}\n')
+        for obj in self.objects:
+            self.file.write(f'{obj.name}: position = {str(obj.pos)}, velocity = {str(obj.v)}\n')
+        self.file.write('\n')
 
-    #     return center_of_mass / system_mass
+    def destroy(self):
+        self.file.close()

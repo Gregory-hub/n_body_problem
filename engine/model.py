@@ -12,7 +12,7 @@ class BaseModel:
     def __init__(self, engine, shader_name: str = 'default', pos: tuple = (0, 0, 0), scale: tuple = (1, 1, 1)):
         self.pos = glm.vec3(pos)
         self.model_matrix = glm.translate(glm.mat4(), self.pos)
-        self.scale = scale
+        self.scale = glm.vec3(scale)
         self.model_matrix = glm.scale(self.model_matrix, self.scale)
 
         self.engine = engine
@@ -38,14 +38,17 @@ class BaseModel:
         self.vao.render()
 
     def update(self):
+        self.model_matrix = glm.translate(glm.mat4(), self.pos)
+        self.model_matrix = glm.scale(self.model_matrix, self.scale)
+        self.shader_program.update_input_variable('model_matrix', self.model_matrix)
         self.shader_program.update_input_variable('view_matrix', self.engine.camera.view_matrix)
         self.shader_program.update_input_variable('camPos', self.engine.camera.pos)
-    
+
     def transform(self, pos: tuple = None, scale: tuple = None):
         if pos is not None:
-            self.pos = pos
+            self.pos = glm.vec3(pos)
         if scale is not None:
-            self.scale = scale
+            self.scale = glm.vec3(scale)
 
         self.model_matrix = glm.translate(glm.mat4(), self.pos)
         self.model_matrix = glm.scale(self.model_matrix, self.scale)
@@ -188,18 +191,10 @@ class Sphere(BaseModel):
         return vertex_data, vbo_format, vbo_attrs
 
     def transform(self, pos: tuple = None, scale: tuple = None, color: tuple = None):
-        if pos is not None:
-            self.pos = pos
-        if scale is not None:
-            self.scale = scale
+        super().transform(pos, scale)
         if color is not None:
             self.color = glm.vec3(color)
-
-        self.model_matrix = glm.translate(glm.mat4(), self.pos)
-        self.model_matrix = glm.scale(self.model_matrix, self.scale)
-
-        self.shader_program.update_input_variable('model_matrix', self.model_matrix)
-        self.shader_program.update_input_variable('color', self.color)
+            self.shader_program.update_input_variable('color', self.color)
 
     def _get_normal(self, point_1: np.array, point_2: np.array):
         normal = np.array([point_1[0] + point_2[0], point_1[1] + point_2[1], point_1[2] + point_2[2]]) / 2
