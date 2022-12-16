@@ -49,15 +49,10 @@ class NBodySystemScene(Scene):
         self.step_size = step_size
 
     def create_scene(self):
-        # self.solar_system = AstronomicalSystem(
-        #     "Solar System", 
-        #     stars=np.array([Sun]),
-        #     planets=np.array([Mercury, Venus, Earth, Mars, Jupiter, Saturn, UrAnus, Neptune])
-        # )
         self.solar_system = AstronomicalSystem(
             "Solar System", 
             stars=np.array([Sun]),
-            planets=np.array([Jupiter])
+            planets=np.array([Mercury, Venus, Earth, Mars, Jupiter, Saturn, UrAnus, Neptune])
         )
 
         sun = self.solar_system.stars['Sun']
@@ -74,7 +69,7 @@ class NBodySystemScene(Scene):
         for obj in self.solar_system.objects:
             model = self.objects[obj.name]
             pos = obj.pos
-            model.transform(pos=(pos - center_of_mass))
+            model.transform(pos=(pos - center_of_mass) * DISTANCE_RATIO)
 
     def destroy(self):
         super().destroy()
