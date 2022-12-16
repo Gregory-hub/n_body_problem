@@ -31,9 +31,11 @@ class GraphicsEngine:
         self.delta_time = 0
 
         self.scene = None
+        self.step_size = None
     
     def set_scene(self, scene):
         self.scene = scene
+        # self.step_size = scene.step_size
 
     def check_events(self):
         for event in pg.event.get():
@@ -64,4 +66,4 @@ class GraphicsEngine:
             self.update_time()
             self.camera.update()
             self.render()
-            self.delta_time = self.clock.tick(60)
+            self.delta_time = self.clock.tick(100)

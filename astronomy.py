@@ -1,36 +1,36 @@
+from math import sqrt
+
 import numpy as np
 
 from engine.model import Sphere
 from engine.light import LightSource
 
-G = 6.67430151515e-11
-
-RUNGE_KUTTA = False
-EULER = True        # semi-implicit
-
+# G = 2.95912208286e-4
+G = 10
 
 class AstronomicalObject:
-    def __init__(self, name: str, mass: float, pos: np.array, velocity: np.array):
+    def __init__(self, name: str, mass: float, pos: list, velocity: list):
         if len(pos) != 3 or len(velocity) != 3:
             raise ValueError(f"dimensions number is 3 (pos len is {len(pos)}, velocity is {len(velocity)}")
         self.name = name
         self.mass = mass
-        self.pos = np.array(pos)
-        self.v = np.array(velocity)
+        self.pos = np.array(pos, dtype=np.float64)
+        self.v = np.array(velocity, dtype=np.float64)
 
     def __repr__(self):
         return f'<AstronomicalObject("{self.name}", position={self.pos}, v={self.v})>'
 
     def a(self, objects: np.array) -> np.array:
-        a = np.array([0, 0, 0], dtype='f8')
+        a = np.array([0, 0, 0], dtype=np.float64)
         for obj in objects:
             if obj is not self:
-                a += G * obj.mass * (obj.pos - self.pos) / abs((obj.pos - self.pos)**3)
+                if np.linalg.norm(self.pos - obj.pos) != 0:
+                    a -= G * obj.mass * (self.pos - obj.pos) / (np.linalg.norm(self.pos - obj.pos) ** 3)
         return a
 
 
 class Planet(AstronomicalObject):
-    def __init__(self, name: str, mass: float, pos: np.array, velocity: np.array, model: Sphere):
+    def __init__(self, name: str, mass: float, pos: list, velocity: list, model: Sphere):
         super().__init__(name, mass, pos, velocity)
         if not isinstance(model, Sphere):
             raise ValueError("Invalid model type: planet model must be of type Sphere")
@@ -42,7 +42,7 @@ class Planet(AstronomicalObject):
 
 
 class Star(AstronomicalObject):
-    def __init__(self, name: str, mass: float, pos: np.array, velocity: np.array, model: LightSource):
+    def __init__(self, name: str, mass: float, pos: list, velocity: list, model: LightSource):
         if not isinstance(model, LightSource):
             raise ValueError("Invalid model type: star model must be of type LightSource")
 
@@ -54,7 +54,7 @@ class Star(AstronomicalObject):
 
 
 class AstronomicalSystem:
-    def __init__(self, name: str, stars: np.array = np.array([]), planets: np.array = np.array([])):
+    def __init__(self, name: str, stars: list, planets: list):
         for star in stars:
             if not isinstance(star, Star):
                 raise ValueError("Invalid star type: stars must be of type Star")
@@ -69,27 +69,36 @@ class AstronomicalSystem:
         for planet in planets:
             self.planets[planet.name] = planet
 
+        stars = np.array(stars)
+        planets = np.array(planets)
         self.objects = np.hstack([stars, planets])
         self.simulation_time = 0
 
         self.file = open('simulation.txt', 'w');
 
     def update(self, step: float):
-        if RUNGE_KUTTA:
-            pass
-        else:
-            for obj in self.objects:
-                obj.v = obj.v + step * obj.a(self.objects)
-            for obj in self.objects:
-                obj.pos = obj.pos + step * obj.v
+        for obj in self.objects:
+            obj.v = obj.v + step * obj.a(self.objects)
+        for obj in self.objects:
+            obj.pos = obj.pos + step * obj.v
 
         self.simulation_time += step
         self.record(step)
 
+    def get_center_of_mass(self):
+        mass = 0
+        mr = np.array([0, 0, 0], dtype=np.float64)
+        for obj in self.objects:
+            mass += obj.mass
+            mr += obj.mass * obj.pos
+
+        return mr / mass
+
     def record(self, step):
         self.file.write(f'SIMULATION TIME = {str(self.simulation_time)}, step size = {step}\n')
         for obj in self.objects:
-            self.file.write(f'{obj.name}: position = {str(obj.pos)}, velocity = {str(obj.v)}\n')
+            line = f'{obj.name:<10}: pos={str(obj.pos):<50} v={str(obj.v):<50} a={str(obj.a(self.objects)):<50}\n'
+            self.file.write(line)
         self.file.write('\n')
 
     def destroy(self):

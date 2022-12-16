@@ -13,8 +13,8 @@ DISTANCE_RATIO = 3
 # initial data for 00:00 1 Jan 2022
 # distance in astronomical units
 # velocity in au per day
-sun_init_pos = np.array([0, 0, 0])
-sun_init_v = np.array([0, 0, 0])
+sun_init_pos = np.array([0, 0, 0]) * 10
+sun_init_v = np.array([0, 0, 0]) * 10
 
 mercury_init_pos = np.array([0.3590263039200, -0.0229458780572, -0.0494704545935])
 mercury_init_v = np.array([-0.0022692079504, 0.0257700545646, 0.0140014950319])
@@ -28,8 +28,10 @@ earth_init_v = np.array([-0.0172179458030, -0.0028624618993, -0.0012400661907])
 mars_init_pos = np.array([-0.8667639099172, -1.1620088222984, -0.5096020231611])
 mars_init_v = np.array([0.0120799162865, -0.0059678982168, -0.0030632775140])
 
-jupiter_init_pos = np.array([4.6580839119399, -1.6079842796591, -0.8026120479031])
-jupiter_init_v = np.array([0.0026255239604, 0.0068288077571, 0.0028631090151])
+# jupiter_init_pos = np.array([4.6580839119399, -1.6079842796591, -0.8026120479031])
+# jupiter_init_v = np.array([0.0026255239604, 0.0068288077571, 0.0028631090151])
+jupiter_init_pos = np.array([1, 1, 0]) * 10
+jupiter_init_v = np.array([-1, 0, 0])
 
 saturn_init_pos = np.array([6.9600794880566, -6.4221819669368, -2.9523453929819])
 saturn_init_v = np.array([0.0036673089657, 0.0036725811771, 0.0013591340670])
@@ -83,7 +85,8 @@ Mars = Planet(
 
 Jupiter = Planet(
     name="Jupiter",
-    mass=9.5479194e-4,
+    # mass=9.5479194e-4,
+    mass=9.5479194e-1,
     pos=np.array(jupiter_init_pos),
     velocity=np.array(jupiter_init_v),
     model=Sphere(engine, pos=jupiter_init_pos * DISTANCE_RATIO, color=[0.9, 0.9, 0.9], scale=0.5 * SCALE_RATIO)

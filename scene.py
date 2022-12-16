@@ -4,7 +4,7 @@ import numpy as np
 from engine.model import BaseModel, Triangle, Pyramid, Sphere, Cube
 from engine.shader_program import ShaderProgram
 from engine.light import LightSource
-from solar_system import Sun, Mercury, Venus, Earth, Mars, Jupiter, Saturn, UrAnus, Neptune
+from solar_system import Sun, Mercury, Venus, Earth, Mars, Jupiter, Saturn, UrAnus, Neptune, DISTANCE_RATIO
 from astronomy import AstronomicalSystem
 
 
@@ -33,9 +33,10 @@ class Scene:
 
     def update(self):
         sphere = self.objects.get('Sphere_1')
-        x = glm.cos(self.engine.time / 1000) * 8
-        z = glm.sin(self.engine.time / 1000) * 8
-        sphere.transform(pos=(x, sphere.pos[1], z))
+        x = glm.sin(self.engine.time / 1000) / glm.cos(self.engine.time / 1000) * 8
+        y = glm.sin(self.engine.time / 1000) / glm.cos(self.engine.time / 1000) * 8
+        z = glm.sin(self.engine.time / 1000) / glm.cos(self.engine.time / 1000) * 8
+        sphere.transform(pos=(x, y, z))
 
     def destroy(self):
         for obj in self.objects.values():
@@ -43,27 +44,38 @@ class Scene:
 
 
 class NBodySystemScene(Scene):
-    def __init__(self, engine):
+    def __init__(self, engine, step_size: float):
         super().__init__(engine)
+        self.step_size = step_size
 
     def create_scene(self):
-        solar_system = AstronomicalSystem(
+        # self.solar_system = AstronomicalSystem(
+        #     "Solar System", 
+        #     stars=np.array([Sun]),
+        #     planets=np.array([Mercury, Venus, Earth, Mars, Jupiter, Saturn, UrAnus, Neptune])
+        # )
+        self.solar_system = AstronomicalSystem(
             "Solar System", 
             stars=np.array([Sun]),
-            planets=np.array([Mercury, Venus, Earth, Mars, Jupiter, Saturn, UrAnus, Neptune])
+            planets=np.array([Jupiter])
         )
 
-        sun = solar_system.stars[0]
+        sun = self.solar_system.stars['Sun']
         # add light source
         self.engine.light = sun.model
         # add models
         self.add(sun.model.sphere, sun.name)
-        for planet in solar_system.planets:
+        for planet in self.solar_system.planets.values():
             self.add(planet.model, planet.name)
 
     def update(self):
-        pass
-        # sphere = self.objects.get('Sphere_1')
-        # x = glm.cos(self.engine.time / 1000) * 8
-        # z = glm.sin(self.engine.time / 1000) * 8
-        # sphere.transform(pos=(x, sphere.pos[1], z))
+        self.solar_system.update(self.step_size)
+        center_of_mass = self.solar_system.get_center_of_mass()
+        for obj in self.solar_system.objects:
+            model = self.objects[obj.name]
+            pos = obj.pos
+            model.transform(pos=(pos - center_of_mass))
+
+    def destroy(self):
+        super().destroy()
+        self.solar_system.destroy()
