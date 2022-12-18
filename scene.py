@@ -3,7 +3,7 @@ import numpy as np
 
 from engine.model import BaseModel, Triangle, Pyramid, Sphere, Cube
 from engine.light import LightSource
-from solar_system import Sun, Mercury, Venus, Earth, Mars, Jupiter, Saturn, UrAnus, Neptune, DISTANCE_RATIO
+from solar_system import Sun, Mercury, Venus, Earth, Mars, Jupiter, Saturn, UrAnus, Neptune, BigBrother, DISTANCE_RATIO
 from astronomy import AstronomicalSystem
 
 
@@ -51,7 +51,7 @@ class NBodySystemScene(Scene):
         self.solar_system = AstronomicalSystem(
             "Solar System", 
             stars=np.array([Sun]),
-            planets=np.array([Mercury, Venus, Earth, Mars, Jupiter, Saturn, UrAnus, Neptune])
+            planets=np.array([Mercury, Venus, Earth, Mars, Jupiter, Saturn, UrAnus, Neptune, BigBrother])
         )
 
         sun = self.solar_system.stars['Sun']

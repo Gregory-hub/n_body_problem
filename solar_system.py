@@ -114,3 +114,11 @@ Neptune = Planet(
     velocity=np.array(nuptune_init_v),
     model=Sphere(engine, pos=nuptune_init_pos * DISTANCE_RATIO, color=[0.9, 0.9, 0.9], scale=0.2 * SCALE_RATIO)
 )
+
+BigBrother = Planet(
+    name="Big Brother",
+    mass=0.5,
+    pos=np.array([4, 0, 0]),
+    velocity=np.array([-0.002, -0.005, 0.0001]),
+    model=Sphere(engine, pos=np.array([5, 1, -5]) * DISTANCE_RATIO, color=[0.9, 0.2, 0.3], scale=0.5 * SCALE_RATIO)
+)
