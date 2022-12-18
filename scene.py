@@ -26,7 +26,6 @@ class Scene:
         self.add(Cube(self.engine, pos=(4, 4, 8)), 'Cube_0')
 
     def render(self):
-        self.update()
         for obj in self.objects.values():
             obj.render()
 
@@ -43,9 +42,10 @@ class Scene:
 
 
 class NBodySystemScene(Scene):
-    def __init__(self, engine, step_size: float):
+    def __init__(self, engine, step_size: float, update_period: int):
         super().__init__(engine)
         self.step_size = step_size
+        self.update_period = update_period  # milliseconds
 
     def create_scene(self):
         self.solar_system = AstronomicalSystem(

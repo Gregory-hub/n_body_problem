@@ -32,11 +32,14 @@ class GraphicsEngine:
         self.delta_time = 0
 
         self.scene = None
-        self.step_size = None
+        self.update_period = None
+        self.time_from_last_update = None
 
-    def set_scene(self, scene):
+    def setup(self, scene):
+        # updates system every period seconds
         self.scene = scene
-        # self.step_size = scene.step_size
+        self.update_period = self.scene.update_period
+        self.time_from_last_update = self.update_period
 
     def check_events(self):
         for event in pg.event.get():
@@ -49,7 +52,9 @@ class GraphicsEngine:
         pg.display.flip()
 
     def update_time(self):
-        self.time = pg.time.get_ticks()
+        ticks = pg.time.get_ticks()
+        self.time_from_last_update += ticks - self.time
+        self.time = ticks
 
     def quit(self):
         if self.scene is not None:
@@ -66,5 +71,8 @@ class GraphicsEngine:
             self.check_events()
             self.update_time()
             self.camera.update()
+            if self.time_from_last_update >= self.update_period:
+                self.scene.update()
+                self.time_from_last_update = 0
             self.render()
             self.delta_time = self.clock.tick(100)

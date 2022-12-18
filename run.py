@@ -3,7 +3,6 @@ from scene import NBodySystemScene
 
 
 if __name__ == "__main__":
-    scene = NBodySystemScene(engine, step_size=0.1)
-    # scene = Scene(engine)
-    engine.set_scene(scene)
+    scene = NBodySystemScene(engine, step_size=10, update_period=1)
+    engine.setup(scene)
     engine.run()
