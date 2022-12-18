@@ -31,7 +31,7 @@ vec3 getLight(vec3 color) {
     // specular light
     vec3 view_direction = normalize(camPos - fragPos);
     vec3 reflection_direction = reflect(-light_direction, normal);
-    vec3 specular = pow(max(dot(view_direction, reflection_direction), 0), 32) * light.ambient_intensity;
+    vec3 specular = pow(max(dot(view_direction, reflection_direction), 0), 32) * light.specular_intensity;
 
     return color * (ambient + diffuse + specular);
 }
