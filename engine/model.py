@@ -1,4 +1,4 @@
-from math import sqrt, pi
+from math import pi
 
 import numpy as np
 import glm
@@ -54,7 +54,7 @@ class BaseModel:
         self.model_matrix = glm.scale(self.model_matrix, self.scale)
 
         self.shader_program.update_input_variable('model_matrix', self.model_matrix)
-    
+
     def destroy(self):
         self.shader_program.destroy()
 
@@ -64,7 +64,7 @@ class Triangle(BaseModel):
         super().__init__(engine, shader_name, pos, scale)
         self.color = glm.vec3(color)
         self.shader_program.update_input_variable('color', self.color)
-    
+
     def get_vbo_data(self):
         vbo_format = '3f 3f'
         vbo_attrs = ['in_position', 'in_normal']
@@ -104,7 +104,7 @@ class Pyramid(BaseModel):
             (1, 3, 2),
             (1, 3, 0),
             (3, 0, 2)])
-        
+
         vertex_data = np.array([vertices[i] for triangle in triangles for i in triangle], dtype='f4')
 
         return vertex_data, vbo_format, vbo_attrs

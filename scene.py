@@ -2,7 +2,6 @@ import glm
 import numpy as np
 
 from engine.model import BaseModel, Triangle, Pyramid, Sphere, Cube
-from engine.shader_program import ShaderProgram
 from engine.light import LightSource
 from solar_system import Sun, Mercury, Venus, Earth, Mars, Jupiter, Saturn, UrAnus, Neptune, DISTANCE_RATIO
 from astronomy import AstronomicalSystem

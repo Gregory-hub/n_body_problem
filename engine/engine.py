@@ -5,8 +5,9 @@ import moderngl as mgl
 
 from engine.camera import Camera
 
+
 class GraphicsEngine:
-    def __init__(self, win_size: tuple = (1600, 900), fullscreen = False):
+    def __init__(self, win_size: tuple = (1600, 900), fullscreen: bool = False):
         self.WIN_SIZE = win_size
         pg.init()
 
@@ -32,7 +33,7 @@ class GraphicsEngine:
 
         self.scene = None
         self.step_size = None
-    
+
     def set_scene(self, scene):
         self.scene = scene
         # self.step_size = scene.step_size

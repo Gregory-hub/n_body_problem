@@ -1,7 +1,3 @@
-import numpy as np
-import moderngl as mgl
-
-
 class VBO:
     def __init__(self, ctx, vertex_data: list, vbo_format: str, attrs: list):
         self.ctx = ctx
@@ -12,4 +8,3 @@ class VBO:
 
     def destroy(self):
         self.vbo.release()
-

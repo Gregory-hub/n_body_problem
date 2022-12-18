@@ -1,5 +1,5 @@
 from engine import engine
-from scene import NBodySystemScene, Scene
+from scene import NBodySystemScene
 
 
 if __name__ == "__main__":

@@ -1,11 +1,10 @@
-from math import sqrt
-
 import numpy as np
 
 from engine.model import Sphere
 from engine.light import LightSource
 
 G = 2.95912208286e-4
+
 
 class AstronomicalObject:
     def __init__(self, name: str, mass: float, pos: list, velocity: list):
