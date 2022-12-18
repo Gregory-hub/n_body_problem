@@ -111,7 +111,7 @@ class Pyramid(BaseModel):
 
 
 class Sphere(BaseModel):
-    def __init__(self, engine, shader_name: str = 'default', pos: tuple = (0, 0, 0), color: tuple = (0.9, 0.9, 0.9), scale: int = 1, quality: int = 10):
+    def __init__(self, engine, shader_name: str = 'default', pos: tuple = (0, 0, 0), color: tuple = (0.9, 0.9, 0.9), scale: int = 1, quality: int = 13):
         self.quality = quality
         super().__init__(engine, shader_name, pos, scale=(scale, scale, scale))
         self.color = glm.vec3(color)
