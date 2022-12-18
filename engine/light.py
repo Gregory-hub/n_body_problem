@@ -8,9 +8,9 @@ class Light:
         self.pos = glm.vec3(pos)
         self.color = glm.vec3(color)
 
-        self.ambient_intensity = 0.1 * self.color
-        self.diffuse_intensity = 0.8 * self.color
-        self.specular_intensity = 0.1 * self.color
+        self.ambient_intensity = 0.167 * self.color
+        self.diffuse_intensity = 0.9 * self.color
+        self.specular_intensity = 0.05 * self.color
 
 
 class LightSource(Light):

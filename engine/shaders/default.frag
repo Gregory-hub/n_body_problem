@@ -33,7 +33,10 @@ vec3 getLight(vec3 color) {
     vec3 reflection_direction = reflect(-light_direction, normal);
     vec3 specular = pow(max(dot(view_direction, reflection_direction), 0), 32) * light.specular_intensity;
 
-    return color * (ambient + diffuse + specular);
+	vec3 res_color = color * (ambient + diffuse + specular);
+	// float gamma = 2.2;
+	// res_color = pow(res_color, 1 / vec3(gamma));		// gamma correction
+    return res_color;
 }
 
 
