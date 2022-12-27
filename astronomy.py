@@ -52,13 +52,16 @@ class Star(AstronomicalObject):
 
 
 class AstronomicalSystem:
-    def __init__(self, name: str, stars: list, planets: list):
+    def __init__(self, name: str, stars: list, planets: list, method: str = "euler"):
         for star in stars:
             if not isinstance(star, Star):
                 raise ValueError("Invalid star type: stars must be of type Star")
         for planet in planets:
             if not isinstance(planet, Planet):
                 raise ValueError("Invalid planet type: planets must be of type Planet")
+        available_methods = ["euler"]
+        if method not in available_methods:
+            raise ValueError(f"Invalid method: method must be one of {available_methods}")
 
         self.stars = {}
         for star in stars:
