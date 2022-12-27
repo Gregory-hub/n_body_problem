@@ -8,6 +8,7 @@ from astronomy import Star, Planet
 
 SCALE_RATIO = 2
 DISTANCE_RATIO = 3
+QUALITY = 1.6
 
 
 # initial data for 00:00 1 Jan 2022
@@ -24,6 +25,9 @@ venus_init_v = np.array([-0.0202047774015, -0.0023048192363, 0.0002413085411])
 
 earth_init_pos = np.array([-0.1746675687485, 0.8878826973429, 0.3848945796490])
 earth_init_v = np.array([-0.0172179458030, -0.0028624618993, -0.0012400661907])
+
+moon_init_pos = np.array([-0.17528096,  0.88577673,  0.38392321])
+moon_init_v = np.array([-0.01660511, -0.00297692, -0.00134978])
 
 mars_init_pos = np.array([-0.8667639099172, -1.1620088222984, -0.5096020231611])
 mars_init_v = np.array([0.0120799162865, -0.0059678982168, -0.0030632775140])
@@ -48,7 +52,7 @@ Sun = Star(
     mass=1,
     pos=np.array(sun_init_pos),
     velocity=np.array(sun_init_v),
-    model=LightSource(engine, pos=sun_init_pos * DISTANCE_RATIO, sphere_color=[0.95, 1, 0.25], scale=0.25 * SCALE_RATIO)
+    model=LightSource(engine, pos=sun_init_pos * DISTANCE_RATIO, sphere_color=[0.95, 1, 0.25], scale=0.25 * SCALE_RATIO, quality=int(10 * QUALITY))
 )
 
 Mercury = Planet(
@@ -56,7 +60,7 @@ Mercury = Planet(
     mass=1.6601e-7,
     pos=np.array(mercury_init_pos),
     velocity=np.array(mercury_init_v),
-    model=Sphere(engine, pos=mercury_init_pos * DISTANCE_RATIO, color=[0.3, 0.3, 0.3], scale=0.05 * SCALE_RATIO)
+    model=Sphere(engine, pos=mercury_init_pos * DISTANCE_RATIO, color=[0.3, 0.3, 0.3], scale=0.05 * SCALE_RATIO, quality=int(10 * QUALITY))
 )
 
 Venus = Planet(
@@ -64,7 +68,7 @@ Venus = Planet(
     mass=2.4478383e-6,
     pos=np.array(venus_init_pos),
     velocity=np.array(venus_init_v),
-    model=Sphere(engine, pos=venus_init_pos * DISTANCE_RATIO, color=[0.9, 0.8, 0.7], scale=0.08 * SCALE_RATIO)
+    model=Sphere(engine, pos=venus_init_pos * DISTANCE_RATIO, color=[0.9, 0.8, 0.7], scale=0.08 * SCALE_RATIO, quality=int(10 * QUALITY))
 )
 
 Earth = Planet(
@@ -72,7 +76,16 @@ Earth = Planet(
     mass=3.00348959632e-6,
     pos=np.array(earth_init_pos),
     velocity=np.array(earth_init_v),
-    model=Sphere(engine, pos=earth_init_pos * DISTANCE_RATIO, color=[0.18, 0.4, 0.6], scale=0.1 * SCALE_RATIO)
+    model=Sphere(engine, pos=earth_init_pos * DISTANCE_RATIO, color=[0.18, 0.4, 0.6], scale=0.1 * SCALE_RATIO, quality=int(10 * QUALITY))
+)
+
+Moon = Planet(
+    name="Moon",
+    mass=3.694154394167924e-08,
+    pos=np.array(moon_init_pos),
+    velocity=np.array(moon_init_v),
+    # model=Sphere(engine, pos=moon_init_pos * DISTANCE_RATIO, color=[0.3 , 0.27 , 0.26], scale=0.02 * SCALE_RATIO, quality=int(10 * QUALITY))
+    model=Sphere(engine, pos=moon_init_pos * DISTANCE_RATIO, color=[0.9 , 0.9 , 0.9], scale=0.05 * SCALE_RATIO, quality=int(10 * QUALITY))
 )
 
 Mars = Planet(
@@ -80,7 +93,7 @@ Mars = Planet(
     mass=3.227151e-7,
     pos=np.array(mars_init_pos),
     velocity=np.array(mars_init_v),
-    model=Sphere(engine, pos=mars_init_pos * DISTANCE_RATIO, color=[0.6, 0.24, 0], scale=0.09 * SCALE_RATIO)
+    model=Sphere(engine, pos=mars_init_pos * DISTANCE_RATIO, color=[0.6, 0.24, 0], scale=0.09 * SCALE_RATIO, quality=int(10 * QUALITY))
 )
 
 Jupiter = Planet(
@@ -88,7 +101,7 @@ Jupiter = Planet(
     mass=9.5479194e-4,
     pos=np.array(jupiter_init_pos),
     velocity=np.array(jupiter_init_v),
-    model=Sphere(engine, pos=jupiter_init_pos * DISTANCE_RATIO, color=[0.69, 0.5, 0.2], scale=0.3 * SCALE_RATIO)
+    model=Sphere(engine, pos=jupiter_init_pos * DISTANCE_RATIO, color=[0.69, 0.5, 0.2], scale=0.3 * SCALE_RATIO, quality=int(10 * QUALITY))
 )
 
 Saturn = Planet(
@@ -96,7 +109,7 @@ Saturn = Planet(
     mass=2.858860e-4,
     pos=np.array(saturn_init_pos),
     velocity=np.array(saturn_init_v),
-    model=Sphere(engine, pos=saturn_init_pos * DISTANCE_RATIO, color=[0.69, 0.56, 0.21], scale=0.25 * SCALE_RATIO)
+    model=Sphere(engine, pos=saturn_init_pos * DISTANCE_RATIO, color=[0.69, 0.56, 0.21], scale=0.25 * SCALE_RATIO, quality=int(10 * QUALITY))
 )
 
 UrAnus = Planet(
@@ -104,7 +117,7 @@ UrAnus = Planet(
     mass=4.366244e-5,
     pos=np.array(uranus_init_pos),
     velocity=np.array(uranus_init_v),
-    model=Sphere(engine, pos=uranus_init_pos * DISTANCE_RATIO, color=[0.33, 0.5, 0.66], scale=0.4 * SCALE_RATIO)
+    model=Sphere(engine, pos=uranus_init_pos * DISTANCE_RATIO, color=[0.33, 0.5, 0.66], scale=0.4 * SCALE_RATIO, quality=int(10 * QUALITY))
 )
 
 Neptune = Planet(
@@ -112,7 +125,7 @@ Neptune = Planet(
     mass=5.151389e-5,
     pos=np.array(nuptune_init_pos),
     velocity=np.array(nuptune_init_v),
-    model=Sphere(engine, pos=nuptune_init_pos * DISTANCE_RATIO, color=[0.21, 0.4, 0.58], scale=0.5 * SCALE_RATIO)
+    model=Sphere(engine, pos=nuptune_init_pos * DISTANCE_RATIO, color=[0.21, 0.4, 0.58], scale=0.5 * SCALE_RATIO, quality=int(10 * QUALITY))
 )
 
 BigBrother = Planet(
@@ -120,5 +133,5 @@ BigBrother = Planet(
     mass=0.5,
     pos=np.array([4, 0, 0]),
     velocity=np.array([-0.002, -0.005, 0.0001]),
-    model=Sphere(engine, pos=np.array([5, 1, -5]) * DISTANCE_RATIO, color=[0.9, 0.2, 0.3], scale=0.5 * SCALE_RATIO)
+    model=Sphere(engine, pos=np.array([5, 1, -5]) * DISTANCE_RATIO, color=[0.9, 0.2, 0.3], scale=0.5 * SCALE_RATIO, quality=int(10 * QUALITY))
 )
