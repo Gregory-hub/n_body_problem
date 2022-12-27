@@ -30,12 +30,12 @@ class Camera:
 
     def move(self):
         keys = pg.key.get_pressed()
-        sensitivity = SENSITIVITY * self.engine.delta_time
+        sensitivity = SENSITIVITY * self.engine.frame_timedelta.microseconds // 1000
 
         if keys[pg.K_LCTRL]:
-            velocity = SPEED * self.engine.delta_time * 10
+            velocity = SPEED * self.engine.frame_timedelta.microseconds // 100
         else:
-            velocity = SPEED * self.engine.delta_time
+            velocity = SPEED * self.engine.frame_timedelta.microseconds // 1000
 
         if keys[pg.K_w]:
             self.dist -= velocity / 60
