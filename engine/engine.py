@@ -1,4 +1,7 @@
 import sys
+from datetime import datetime as dt
+from datetime import timedelta
+import time
 
 import pygame as pg
 import moderngl as mgl
@@ -28,18 +31,18 @@ class GraphicsEngine:
 
         self.camera = Camera(self, pos=(0, 0, -40))
         self.clock = pg.time.Clock()
-        self.time = 0
-        self.delta_time = 0
+        self.time = dt.now()
+        self.frame_timedelta = timedelta()
 
         self.scene = None
         self.update_period = None
-        self.time_from_last_update = None
+        self.update_timedelta = timedelta()
 
     def setup(self, scene):
         # updates system every period seconds
         self.scene = scene
-        self.update_period = self.scene.update_period
-        self.time_from_last_update = self.update_period
+        self.update_period = timedelta(microseconds=self.scene.update_period)
+        self.frame_timedelta = self.update_period
 
     def check_events(self):
         for event in pg.event.get():
@@ -52,9 +55,10 @@ class GraphicsEngine:
         pg.display.flip()
 
     def update_time(self):
-        ticks = pg.time.get_ticks()
-        self.time_from_last_update += ticks - self.time
-        self.time = ticks
+        now = dt.now()
+        self.frame_timedelta = now - self.time
+        self.update_timedelta += self.frame_timedelta
+        self.time = now
 
     def quit(self):
         if self.scene is not None:
@@ -68,11 +72,16 @@ class GraphicsEngine:
         if self.scene is None:
             self.quit()
         while True:
+            start = dt.now()
             self.check_events()
             self.update_time()
             self.camera.update()
-            if self.time_from_last_update >= self.update_period:
+            if self.update_timedelta >= self.update_period:
                 self.scene.update()
-                self.time_from_last_update = 0
+                self.update_timedelta = timedelta()
             self.render()
-            self.delta_time = self.clock.tick(100)
+            # self.clock.tick(1000000)    # framerate (try to run as fast as possible)
+            end = dt.now()
+            step_time = (end - start)
+            step_time = step_time.seconds + step_time.microseconds / 1000000
+            print(f"Time per step: {step_time:<8f}s, framerate: {round(1 / step_time, 2)}")

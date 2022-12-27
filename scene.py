@@ -3,7 +3,7 @@ import numpy as np
 
 from engine.model import BaseModel, Triangle, Pyramid, Sphere, Cube
 from engine.light import LightSource
-from solar_system import Sun, Mercury, Venus, Earth, Mars, Jupiter, Saturn, UrAnus, Neptune, BigBrother, DISTANCE_RATIO
+from solar_system import Sun, Mercury, Venus, Earth, Moon, Mars, Jupiter, Saturn, UrAnus, Neptune, BigBrother, DISTANCE_RATIO
 from astronomy import AstronomicalSystem
 
 
@@ -42,16 +42,20 @@ class Scene:
 
 
 class NBodySystemScene(Scene):
-    def __init__(self, engine, step_size: float, update_period: int):
+    def __init__(self, engine, step_size: float = 1, update_period: int = 1, method: str = "euler"):
+        # update period in seconds
+        self.method = method
         super().__init__(engine)
         self.step_size = step_size
-        self.update_period = update_period  # milliseconds
+        self.update_period = update_period * 1000000
 
     def create_scene(self):
         self.solar_system = AstronomicalSystem(
             "Solar System", 
             stars=np.array([Sun]),
-            planets=np.array([Mercury, Venus, Earth, Mars, Jupiter, Saturn, UrAnus, Neptune])
+            planets=np.array([Mercury, Venus, Earth, Moon, Mars, Jupiter, Saturn, UrAnus, Neptune]),
+            # planets=np.array([Earth, Jupiter]),
+            method=self.method
         )
 
         sun = self.solar_system.stars['Sun']
