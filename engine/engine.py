@@ -80,7 +80,7 @@ class GraphicsEngine:
                 self.scene.update()
                 self.update_timedelta = timedelta()
             self.render()
-            # self.clock.tick(1000000)    # framerate (try to run as fast as possible)
+            self.clock.tick(60)    # framerate
             end = dt.now()
             step_time = (end - start)
             step_time = step_time.seconds + step_time.microseconds / 1000000
