@@ -84,8 +84,7 @@ Moon = Planet(
     mass=3.694154394167924e-08,
     pos=np.array(moon_init_pos),
     velocity=np.array(moon_init_v),
-    # model=Sphere(engine, pos=moon_init_pos * DISTANCE_RATIO, color=[0.3 , 0.27 , 0.26], scale=0.02 * SCALE_RATIO, quality=int(10 * QUALITY))
-    model=Sphere(engine, pos=moon_init_pos * DISTANCE_RATIO, color=[0.9 , 0.9 , 0.9], scale=0.05 * SCALE_RATIO, quality=int(10 * QUALITY))
+    model=Sphere(engine, pos=moon_init_pos * DISTANCE_RATIO, color=[0.3 , 0.27 , 0.26], scale=0.02 * SCALE_RATIO, quality=int(10 * QUALITY))
 )
 
 Mars = Planet(

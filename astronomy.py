@@ -96,7 +96,7 @@ class AstronomicalSystem:
         return mr / mass
 
     def record(self, step):
-        self.file.write(f'SIMULATION TIME = {str(self.simulation_time)}, step size = {step}\n')
+        self.file.write(f'SIMULATION TIME = {self.simulation_time:<6f}, step size = {step}\n')
         for obj in self.objects:
             line = f'{obj.name:<10}: pos={str(obj.pos):<50} v={str(obj.v):<50} a={str(obj.a(self.objects)):<50}\n'
             self.file.write(line)

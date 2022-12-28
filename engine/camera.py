@@ -10,7 +10,7 @@ SPEED = 1
 
 
 class Camera:
-    def __init__(self, engine, pos=(0, 0, -20), yaw=90, pitch=0):
+    def __init__(self, engine, pos=(0, 0, -40), yaw=90, pitch=0):
         self.engine = engine
         self.aspect_ratio = self.engine.WIN_SIZE[0] / self.engine.WIN_SIZE[1]
         self.up = glm.vec3(0, 1, 0)
