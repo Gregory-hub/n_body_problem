@@ -19,6 +19,7 @@ class AstronomicalObject:
         return f'<AstronomicalObject("{self.name}", position={self.pos}, v={self.v})>'
 
     def a(self, objects: np.array) -> np.array:
+        # O(n)
         a = np.array([0, 0, 0], dtype=np.float64)
         for obj in objects:
             if obj is not self:
@@ -78,8 +79,9 @@ class AstronomicalSystem:
         self.file = open('simulation.txt', 'w');
 
     def update(self, step: float):
+        # O(n**2)
         for obj in self.objects:
-            obj.v = obj.v + step * obj.a(self.objects)
+            obj.v = obj.v + step * obj.a(self.objects)  # O(n)
         for obj in self.objects:
             obj.pos = obj.pos + step * obj.v
 
