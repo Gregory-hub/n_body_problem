@@ -1,7 +1,6 @@
 import sys
 from datetime import datetime as dt
 from datetime import timedelta
-import time
 
 import pygame as pg
 import moderngl as mgl
@@ -63,25 +62,39 @@ class GraphicsEngine:
     def quit(self):
         if self.scene is not None:
             self.scene.destroy()
+            self.on_exit()
             pg.quit()
             sys.exit()
         else:
             raise AttributeError("Trying to run with no scene. Run set_scene(scene) before run()")
 
+    def on_exit(self):
+        print(f"System update time range: from {self.min_step_time}s to {self.max_step_time}s")
+
     def run(self):
+        step = 1
+        self.max_step_time = 0
+        self.min_step_time = 10
         if self.scene is None:
             self.quit()
         while True:
-            start = dt.now()
             self.check_events()
             self.update_time()
             self.camera.update()
             if self.update_timedelta >= self.update_period:
+                start = dt.now()
+
                 self.scene.update()
                 self.update_timedelta = timedelta()
+
+                step += 1
+                end = dt.now()
+                step_time = (end - start)
+                step_time = step_time.seconds + step_time.microseconds / 1000000
+                print(f"System update time at step {step}: {step_time:<8f}s")
+                if step_time > self.max_step_time:
+                    self.max_step_time = step_time
+                if step_time < self.min_step_time:
+                    self.min_step_time = step_time
             self.render()
-            # self.clock.tick(1000000)    # framerate (try to run as fast as possible)
-            end = dt.now()
-            step_time = (end - start)
-            step_time = step_time.seconds + step_time.microseconds / 1000000
-            print(f"Time per step: {step_time:<8f}s, framerate: {round(1 / step_time, 2)}")
+            self.clock.tick(60)    # framerate

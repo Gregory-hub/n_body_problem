@@ -55,6 +55,7 @@ class NBodySystemScene(Scene):
             stars=np.array([Sun]),
             # planets=np.array([Mercury, Venus, Earth, Moon, Mars, Jupiter, Saturn, UrAnus, Neptune, BigBrother]),
             planets=np.array([Mercury, Venus, Earth, Moon, Mars, Jupiter, Saturn, UrAnus, Neptune]),
+            # planets=np.array([Mercury, Venus, Earth, Moon, Mars, Jupiter, Saturn, UrAnus, Neptune, BigBrother]),
             # planets=np.array([Earth, Jupiter]),
             method=self.method
         )
